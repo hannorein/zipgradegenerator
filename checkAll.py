@@ -12,7 +12,7 @@ def getStudentData(sid):
             if sid==row[0]:
                 return row
     
-with open('quiz.csv', 'w') as csvfile:
+with open('checked.csv', 'w') as csvfile:
     writer = csv.writer(csvfile, delimiter=',', quotechar='"')
     for f in glob.glob("submissions/*.py"):
         sid = f.split("/")[1].split(" ")[0]
@@ -24,7 +24,7 @@ with open('quiz.csv', 'w') as csvfile:
             ok = "0"
 
         data = getStudentData(sid)
-        row = [sid,ok,ret,data[1],data[11]]
+        row = [sid,ok,ret,data[1],data[11],f]
         print(", ".join(row))
         writer.writerow(row)
 
