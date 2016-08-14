@@ -80,11 +80,10 @@ def render(self):
 #Monkey patch
 PageMerge.render = render
 
-def markStudendID(outfile, sid):
+def getzipwithstudentid(outfile, sid):
     global trailer
     trailer = PdfReader("zip100.pdf")
     for i,n in enumerate(list(map(int,str(sid)))):
         addmark(i,n)
     PdfWriter().write(outfile, trailer)
-markStudendID("out.pdf","100309990")
 
