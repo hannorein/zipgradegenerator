@@ -5,14 +5,22 @@ import os
 import signal
 from multiprocessing import Process,Manager
 
+correct_output = """1
+1
+3
+5
+13
+21
+55
+89
+233
+377
+"""
 
 def runStudentCode(filename,return_dict):
     p = subprocess.Popen(["python3", filename], stdout=subprocess.PIPE,stderr=subprocess.STDOUT,preexec_fn=os.setpgrp)
     return_dict["pid"] = p.pid
     return_dict["output"] = p.communicate()[0].decode("ascii")
-
-with open('correct_output.txt', 'r') as cf:
-    correct_output = cf.read()
 
 manager = Manager()
 return_dict = manager.dict()
@@ -37,7 +45,6 @@ def checkSubmission(f):
             if "SyntaxError" in o:
                 notcorrect = "Syntax error"
             else:
-                print(return_dict["output"]);
                 notcorrect = "Output not correct"
     return notcorrect
 
