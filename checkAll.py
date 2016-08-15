@@ -19,7 +19,7 @@ with open('checked.csv', 'w') as csvfile:
         ret = checkSubmission(f)
         if ret is None:
             ok = "1"
-            ret = ""
+            ret = "All ok"
         else:
             ok = "0"
 
