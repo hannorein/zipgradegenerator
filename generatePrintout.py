@@ -7,8 +7,9 @@ from generatezip import  getzipwithstudentid
 import csv
 import os
 
+maxlines = 50
+
 def getBugs(name):
-    maxlines = 50
     f = "submissions/"+name
     fm = "submissions_with_bugs/"+name
     output = subprocess.Popen(["diff", "--unchanged-line-format=", "--old-line-format=","--new-line-format=%dn:", f, fm], stdout=subprocess.PIPE).communicate()[0].decode("ascii")
@@ -39,16 +40,16 @@ with open('quiz.csv', 'w') as csvfile:
     with open('checked.csv', 'r') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in reader:
+            f = row[5].split("/")[1]
             if "1"==row[1]:
-                f = row[5].split("/")[1]
                 lines, totalbugs = getBugs(f)
+                if totalbugs<1:
+                    print("Warning. Not enough bugs.")
                 row.append(str(totalbugs))
                 row = row + [str(i) for i in lines]
-                writer.writerow(row)
-                print(", ".join(row[0:3]+row[5:]))
-                f = row[5]
-                sid = f.split("/")[1].split(" ")[0]
-                fm = "submissions_with_bugs/"+f.split("/")[1]
+                print(", ".join(row[0:3]+row[6:]))
+                sid = f.split(" ")[0]
+                fm = "submissions_with_bugs/"+f
                 copyfile(fm,"tmp.py")
                 subprocess.Popen(["/Library/TeX/texbin/pdflatex", "source.tex"], stdout=subprocess.PIPE).communicate()[0]
                 getzipwithstudentid("zipwithid.pdf",sid[1:])
@@ -57,7 +58,8 @@ with open('quiz.csv', 'w') as csvfile:
                 pdfwriter.addpages(PdfReader("source.pdf").pages)
                 pdfwriter.addpages(PdfReader("zipwithid.pdf").pages)
                 pdfwriter.write("printouts/quiz_"+sid+".pdf")
-
             else:
-                print("Test not passed")
+                row = row + ["0" for i in range(maxlines+1)]
+                print(", ".join(row[0:3]+["Test not passed"]))
+            writer.writerow(row)
 
