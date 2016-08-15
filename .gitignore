@@ -9,4 +9,8 @@ texput.log
 *.swp
 checked.csv
 venv/
+printouts/
+quiz.csv
+submissions/
+submissions_with_bugs/
 source.pdf

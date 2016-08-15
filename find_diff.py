@@ -2,6 +2,7 @@
 import glob
 import subprocess
 
+
 for f in glob.glob("submissions/*.py"):
     sid = f.split("/")[1].split(" ")[0]
     fm = "submissions_with_bugs/"+f.split("/")[1]
