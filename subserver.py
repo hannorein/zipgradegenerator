@@ -1,7 +1,8 @@
 import os
 from flask import Flask, flash, abort, render_template, send_from_directory, request, redirect, Response, make_response, url_for
 from werkzeug.utils import secure_filename
-
+from datetime import timedelta, datetime
+import math
 
 class FlaskApp(Flask):
     def __init__(self, *args, **kwargs):
@@ -19,6 +20,17 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
+    deadline = datetime.strptime("2016-09-09 17:00:00 EST", "%Y-%m-%d %H:%M:%S %Z")
+    time_difference = deadline-datetime.now() 
+    minutes = int(math.floor(time_difference.total_seconds() / 60.))
+    if minutes<0:
+        return '''
+        <!doctype html>
+        <title>No success</title>
+        <h1>Deadline passed. </h1>
+        '''
+
+
     if request.method == 'POST':
         print(request)
         # Student id
@@ -90,12 +102,13 @@ def upload_file():
     return '''
     <!doctype html>
     <title>Upload assignment</title>
-    <h1>Upload assignment</h1>
+    <h1>Upload assignment 1</h1>
     <form action="" method=post enctype=multipart/form-data>
       <p>File (should have extension .py): <input type=file name=file></p>
       <p>First and last name: <input type="text" name="name"></p>
       <p>Student id (10 digits): <input type="text" name="sid"></p>
       <p><input type=submit value=Submit></p>
+      <p>The deadline for this assignment is in '''+"%d"%minutes+''' minutes. Submissions will not be accepted after the deadline.</p>
     </form>
     '''
 
