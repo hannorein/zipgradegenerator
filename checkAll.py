@@ -11,7 +11,7 @@ def getStudentData(sid):
         for row in reader:
             if sid==row[0]:
                 return row
-    return [0000000000, "#Not Found", "", "", "", "", "", "", "", "", "", ""]
+    return [0000000000, "Name Not Found", "", "", "", "", "", "", "", "", "", ""]
     
 with open('checked.csv', 'w') as csvfile:
     writer = csv.writer(csvfile, delimiter=',', quotechar='"')

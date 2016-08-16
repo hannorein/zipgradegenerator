@@ -1,0 +1,18 @@
+\documentclass{article}
+\usepackage{tikz}
+
+\newcommand\PlaceText[3]{%
+\begin{tikzpicture}[remember picture,overlay]
+\node[outer sep=0pt,inner sep=0pt,anchor=south west] 
+  at ([xshift=#1,yshift=-#2]current page.north west) {#3};
+\end{tikzpicture}%
+}
+
+\begin{document}
+
+\PlaceText{55mm}{33mm}{\input{name}}
+\PlaceText{110mm}{33mm}{PSCB57 Fall 2016}
+\PlaceText{150mm}{33mm}{Quiz1}
+\PlaceText{54mm}{46mm}{\input{studentnumber}}
+
+\end{document}
