@@ -1,1 +1,0 @@
-docker run -it --rm --name my-running-script -v /home/rein/git/zipgradegenerator/uploads/1234567891_Dan_Tamayo_fib.py:/usr/src/myapp.py -v /home/rein/git/zipgradegenerator/checkSubmission.py:/usr/src/checkSubmission.py -w /usr/src/ python:3 python checkSubmission.py myapp.py
