@@ -48,10 +48,16 @@ with open('quiz.csv', 'w') as csvfile:
                 row.append(str(totalbugs))
                 row = row + [str(i) for i in lines]
                 print(", ".join(row[0:3]+row[6:]))
-                sid = f.split(" ")[0]
+                sid = f[0:10]
                 fm = "submissions_with_bugs/"+f
                 copyfile(fm,"tmp.py")
                 subprocess.Popen(["/Library/TeX/texbin/pdflatex", "source.tex"], stdout=subprocess.PIPE).communicate()[0]
+                with open('name.tex', 'w') as the_file:
+                    the_file.write(row[3])
+                with open('studentnumber.tex', 'w') as the_file:
+                    for s in sid[1:]:
+                        the_file.write(s+"\\hspace{3.6mm}")
+                subprocess.Popen(["/Library/TeX/texbin/pdflatex", "source2.tex"], stdout=subprocess.PIPE).communicate()[0]
                 getzipwithstudentid("zipwithid.pdf",sid[1:])
 
                 pdfwriter = PdfWriter()

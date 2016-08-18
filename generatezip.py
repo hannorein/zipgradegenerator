@@ -85,5 +85,9 @@ def getzipwithstudentid(outfile, sid):
     trailer = PdfReader("zip100.pdf")
     for i,n in enumerate(list(map(int,str(sid)))):
         addmark(i,n)
+    
+    wmark_trailer = PdfReader("source2.pdf")
+    wmark = PageMerge().add(wmark_trailer.pages[0])[0]
+    PageMerge(trailer.pages[0]).add(wmark).render()
     PdfWriter().write(outfile, trailer)
 
