@@ -33,6 +33,12 @@ def checkSubmission(f):
         sf = cf.read()
     if "import" in sf:
         notcorrect = "Import statement used"
+    if "377" in sf:
+        notcorrect = "Fibonacci number hard coded"
+    if "233" in sf:
+        notcorrect = "Fibonacci number hard coded"
+    if "89" in sf:
+        notcorrect = "Fibonacci number hard coded"
     p = Process(target=runStudentCode,args=(f,return_dict))
     p.start()
     p.join(1)
