@@ -125,7 +125,7 @@ def upload_file():
                 if allowed_file(file.filename):
                     filename = str(uuid.uuid4())+".py"
                     file.save(os.path.join(app.config['TEST_UPLOAD_FOLDER'], filename))
-                    p = subprocess.Popen(["./run_docker.bash", filename], stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+                    p = subprocess.Popen(["./run_docker.bash", filename], stdout=subprocess.PIPE,stderr=subprocess.STDOUT,cwd="/home/rein/git/zipgradegenerator/")
                     out = html.escape(p.communicate()[0].decode("ascii"))
                     return '''
                     <!doctype html>
@@ -149,7 +149,7 @@ def upload_file():
     <!doctype html>
     <title>Test/upload assignment</title>
     <h1>Test assignment</h1>
-    <p>Note that this test only checks some of the requirements for this assignment. It is not a guarantee that the assignment will be marked as correct.<p>
+    <p>You can run an automated check before submitting your assignment. Note that this test only checks some of the requirements for the assignment. It is not a guarantee that the assignment will be marked as correct.<p>
     <form action="" method=post enctype=multipart/form-data>
       <p>File (should have extension .py): <input type=file name=file></p>
       <p><input type=submit value=Submit></p>
