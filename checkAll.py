@@ -16,7 +16,7 @@ def getStudentData(sid):
 with open('checked.csv', 'w') as csvfile:
     writer = csv.writer(csvfile, delimiter=',', quotechar='"')
     for f in glob.glob("uploads/*.py"):
-        sid = f.split("/")[1].split(" ")[0]
+        sid = f.split("/")[1].split("_")[0]
         ret = checkSubmission(f)
         if ret is None:
             ok = "1"
