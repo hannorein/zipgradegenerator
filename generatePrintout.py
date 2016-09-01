@@ -10,8 +10,8 @@ import os
 maxlines = 50
 
 def getBugs(name):
-    f = "submissions/"+name
-    fm = "submissions_with_bugs/"+name
+    f = "uploads/"+name
+    fm = "uploads_with_bugs/"+name
     output = subprocess.Popen(["diff", "--unchanged-line-format=", "--old-line-format=","--new-line-format=%dn:", f, fm], stdout=subprocess.PIPE).communicate()[0].decode("ascii")
     with open(fm, 'r') as cf:
         fml = cf.read().splitlines()
@@ -49,7 +49,7 @@ with open('quiz.csv', 'w') as csvfile:
                 row = row + [str(i) for i in lines]
                 print(", ".join(row[0:3]+row[6:]))
                 sid = f[0:10]
-                fm = "submissions_with_bugs/"+f
+                fm = "uploads_with_bugs/"+f
                 copyfile(fm,"tmp.py")
                 subprocess.Popen(["/Library/TeX/texbin/pdflatex", "source.tex"], stdout=subprocess.PIPE).communicate()[0]
                 with open('name.tex', 'w') as the_file:
