@@ -33,6 +33,8 @@ def checkSubmission(f):
         sf = cf.read()
     if "import" in sf:
         notcorrect = "Import statement used"
+    if "input" in sf:
+        notcorrect = "Input statement used. Do not use the input statement for this assignment."
     if "377" in sf:
         notcorrect = "Fibonacci number hard coded"
     if "233" in sf:
