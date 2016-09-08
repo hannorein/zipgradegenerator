@@ -5,6 +5,7 @@ import os
 from os.path import basename, splitext
 import signal
 import inspect
+import math
 from multiprocessing import Process,Manager
 
 correct_output = """"""
@@ -39,6 +40,31 @@ def checkSubmission(f):
         for c in l:
             if c not in allowedchars:
                 notcorrect = "Character not allowed: '"+c+"'."
+    
+    glines,glinesn = inspect.getsourcelines(pm.g)
+    ffor = 0
+    for l in glines:
+        if "for" in l:
+            ffor = 1
+    if ffor==0:
+        notcorrect = "Function g contains no for loop."
+
+    corf = [[1e-16, 0.], [ 2.5e-16,1.],[1e-13,0.9988901220865705],[1.12e-16,2.],[-1e15,1.],[1e-15,1.1111111111111112]]
+    for a,b in corf:
+        if pm.f(a)!=b:
+            notcorrect = "Incorrect return value for f(%.16e)."%a
+
+    corg = [[1e-300, float("inf")], [0.,0.],[0,0],[-1e-15,float("-inf")],[1e300,float("inf")]]
+    for a,b in corg:
+        if pm.g(a)!=b:
+            notcorrect = "Incorrect return value for g(%.16e)."%a
+    
+    for a in [0,1,1000000,2000,-234234]:
+        try:
+            if math.isinf(pm.g(a)):
+                notcorrect = "Incorrect return value for g(%d)."%a
+        except OverflowError:
+            pass
 
     
     p = Process(target=runStudentCode,args=(f,return_dict))
