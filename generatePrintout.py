@@ -37,7 +37,7 @@ for f in glob.glob("printouts/*.pdf"):
 
 with open('quiz.csv', 'w') as csvfile:
     writer = csv.writer(csvfile, delimiter=',', quotechar='"')
-    with open('checked.csv', 'r') as csvfile:
+    with open('checked_sorted.csv', 'r') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in reader:
             f = row[5].split("/")[1]
@@ -61,11 +61,12 @@ with open('quiz.csv', 'w') as csvfile:
                 getzipwithstudentid("zipwithid.pdf",sid[1:])
 
                 pdfwriter = PdfWriter()
-                pdfwriter.addpages(PdfReader("source.pdf").pages)
                 pdfwriter.addpages(PdfReader("zipwithid.pdf").pages)
+                pdfwriter.addpages(PdfReader("source.pdf").pages)
                 pdfwriter.write("printouts/quiz_"+sid+".pdf")
             else:
                 row = row + ["0" for i in range(maxlines+1)]
                 print(", ".join(row[0:3]+["Test not passed"]))
             writer.writerow(row)
+            break
 
