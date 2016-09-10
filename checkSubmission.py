@@ -23,6 +23,10 @@ def checkSubmission(f):
     if "output" in return_dict:
         del return_dict["output"]
     with open(f, 'r') as cf:
+        sf = cf.readlines()
+    if len(sf)>70:
+        notcorrect = "Too many lines of code (max: 70)."
+    with open(f, 'r') as cf:
         sf = cf.read()
     if "import" in sf:
         notcorrect = "Import statement used"
