@@ -25,7 +25,7 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
-    deadline = datetime.strptime("2016-09-09 17:00:00 EST", "%Y-%m-%d %H:%M:%S %Z")
+    deadline = datetime.strptime("2016-09-23 17:00:00 EST", "%Y-%m-%d %H:%M:%S %Z")
     time_difference = deadline-datetime.now() 
     tm = int(math.floor(time_difference.total_seconds() / 60.))
     days = int(math.floor(tm/60./24.))
