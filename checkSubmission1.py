@@ -2,13 +2,20 @@
 import sys
 import subprocess
 import os
-from os.path import basename, splitext
 import signal
-import inspect
-import math
 from multiprocessing import Process,Manager
 
-correct_output = """"""
+correct_output = """1
+1
+3
+5
+13
+21
+55
+89
+233
+377
+"""
 
 def runStudentCode(filename,return_dict):
     p = subprocess.Popen(["python3", filename], stdout=subprocess.PIPE,stderr=subprocess.STDOUT,preexec_fn=os.setpgrp)
@@ -28,45 +35,12 @@ def checkSubmission(f):
         notcorrect = "Import statement used"
     if "input" in sf:
         notcorrect = "Input statement used. Do not use the input statement for this assignment."
-    pm = __import__(splitext(basename(f))[0])
-    if "f" not in dir(pm):
-        notcorrect = "Function f not defined."
-    if "g" not in dir(pm):
-        notcorrect = "Function g not defined."
-
-    flines,flinesn = inspect.getsourcelines(pm.f)
-    allowedchars = ["d","e","f"," ","(","x",")",":","\n","r","t","u","n","\t","1","-","+","/"]
-    for l in flines:
-        for c in l:
-            if c not in allowedchars:
-                notcorrect = "Character not allowed: '"+c+"'."
-    
-    glines,glinesn = inspect.getsourcelines(pm.g)
-    ffor = 0
-    for l in glines:
-        if "for" in l:
-            ffor = 1
-    if ffor==0:
-        notcorrect = "Function g contains no for loop."
-
-    corf = [[1e-16, 0.], [ 2.5e-16,1.],[1e-13,0.9988901220865705],[1.12e-16,2.],[-1e15,1.],[1e-15,1.1111111111111112]]
-    for a,b in corf:
-        if pm.f(a)!=b:
-            notcorrect = "Incorrect return value for f(%.16e)."%a
-
-    corg = [[1e-300, float("inf")], [0.,0.],[0,0],[-1e-15,float("-inf")],[1e300,float("inf")]]
-    for a,b in corg:
-        if pm.g(a)!=b:
-            notcorrect = "Incorrect return value for g(%.16e)."%a
-    
-    for a in [0,1,1000000,2000,-234234]:
-        try:
-            if math.isinf(pm.g(a)):
-                notcorrect = "Incorrect return value for g(%d)."%a
-        except OverflowError:
-            pass
-
-    
+    if "377" in sf:
+        notcorrect = "Fibonacci number hard coded"
+    if "233" in sf:
+        notcorrect = "Fibonacci number hard coded"
+    if "89" in sf:
+        notcorrect = "Fibonacci number hard coded"
     p = Process(target=runStudentCode,args=(f,return_dict))
     p.start()
     p.join(1)
