@@ -31,7 +31,7 @@ def upload_file():
     days = int(math.floor(tm/60./24.))
     hours = int(math.floor(tm/60.-days*24.))
     minutes = int(math.floor(tm-days*24.*60.-hours*60.))
-    if minutes<0:
+    if time_difference.total_seconds()<0:
         return '''
         <!doctype html>
         <title>No success</title>
@@ -67,7 +67,7 @@ def upload_file():
                 return '''
                 <!doctype html>
                 <title>No success</title>
-                <h1>Student id invalid. Enter all 10 digits. Please try again.</h1>
+                <h1>Student id invalid. Enter all 10 digits. If your student id has only 9 digits, add a 0 at the beginning. Please try again.</h1>
                 '''
             if not sid.isdigit(): 
                 return '''
