@@ -40,8 +40,8 @@ with open('quiz.csv', 'w') as csvfile:
     with open('checked_sorted.csv', 'r') as csvfile:
         reader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in reader:
-            f = row[5].split("/")[1]
             if "1"==row[1]:
+                f = row[5].split("/")[1]
                 lines, totalbugs = getBugs(f)
                 if totalbugs<1:
                     print("Warning. Not enough bugs.")
@@ -68,5 +68,4 @@ with open('quiz.csv', 'w') as csvfile:
                 row = row + ["0" for i in range(maxlines+1)]
                 print(", ".join(row[0:3]+["Test not passed"]))
             writer.writerow(row)
-            break
 
