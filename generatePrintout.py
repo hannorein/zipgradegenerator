@@ -9,6 +9,14 @@ import os
 
 maxlines = 50
 
+def getStudentData(sid):
+    with open('PSCB57H3-2016-F.csv', 'r') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',', quotechar='"')
+        for row in reader:
+            if sid==row[0]:
+                return row
+    return None
+
 def getBugs(name):
     f = "uploads/"+name
     fm = "uploads_with_bugs/"+name
@@ -63,7 +71,11 @@ with open('quiz.csv', 'w') as csvfile:
                 pdfwriter = PdfWriter()
                 pdfwriter.addpages(PdfReader("zipwithid.pdf").pages)
                 pdfwriter.addpages(PdfReader("source.pdf").pages)
-                pdfwriter.write("printouts/quiz_"+sid+".pdf")
+                try:
+                    tut = getStudentData(sid)[5]
+                except:
+                    tut = "NOTFOUND"
+                pdfwriter.write("printouts/quiz_"+tut+"_"+sid+".pdf")
             else:
                 row = row + ["0" for i in range(maxlines+1)]
                 print(", ".join(row[0:3]+["Test not passed"]))
