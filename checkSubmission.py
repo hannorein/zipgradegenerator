@@ -92,14 +92,20 @@ def checkSubmission(f):
     ############
     ############  Test for fibd(x)
     ############
-    corfibd = [[1,0.], [10,1.421085471520200372e-14],[20,4.547473508864641190e-12],[90,8.704000000000000000e+03]]
+    corfibd = [[1,0.], [10,1.421085471520200372e-14],[20,4.547473508864641190e-12]]
     for a,b in corfibd:
         try:
-            if pm.fibd(a)!=b:
+            if math.fabs(pm.fibd(a)-b)>max(1e-10,1e-10*b):
                 notcorrect = "Incorrect return value for fibd(%d)."%a
         except:
             notcorrect = "Incorrect return value for fibd(%d)."%a
             pass
+    try:
+        if math.fabs(pm.fibd(90))<1000:
+            notcorrect = "Incorrect return value for fibd(%d)."%90
+    except:
+        notcorrect = "Incorrect return value for fibd(%d)."%90
+
 
     
     p = Process(target=runStudentCode,args=(f,return_dict))
