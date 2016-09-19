@@ -29,7 +29,7 @@ def getBugs(name):
             bugs.append(int(d))
     lines = []
     totalbugs = 0
-    for i in range(len(fml)):
+    for i in range(len(fml)+1):
         if i in bugs:
             lines.append(1)
             totalbugs+=1
