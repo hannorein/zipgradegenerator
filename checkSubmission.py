@@ -6,6 +6,7 @@ from os.path import basename, splitext
 import signal
 import inspect
 import math
+sys.path.insert(0, "./uploads")
 from multiprocessing import Process,Manager
 
 correct_output = """"""
