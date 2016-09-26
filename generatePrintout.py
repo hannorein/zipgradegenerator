@@ -111,7 +111,7 @@ with open('quiz.csv', 'w') as csvfile:
                     qf.write(" \\end{itemize}\\end{multicols}")
                     row = row + [correctanswers]
                 with open('q4.tex', 'w') as qf:
-                    qf.write(" \\textbf{Question 74:}\\\\\n Which of the algorithms returns the exact Fibonacci number for $n=89$?   \\begin{multicols}{5}\\begin{itemize}")
+                    qf.write(" \\textbf{Question 74:}\\\\\n Which of the algorithms return the exact Fibonacci number for $n=89$?   \\begin{multicols}{5}\\begin{itemize}")
                     answers = [ 
                             (0, "\\texttt{fib1(n)}"),
                             (1, "\\texttt{fib2(n)}"),
