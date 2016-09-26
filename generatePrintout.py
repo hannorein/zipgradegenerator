@@ -77,7 +77,7 @@ with open('quiz.csv', 'w') as csvfile:
                     qf.write(" \\end{itemize}\\end{multicols}")
                     row = row + [correctanswers]
                 with open('q2.tex', 'w') as qf:
-                    qf.write(" \\textbf{Question 72:}\\\\\n Mark of all numbers which would give the correct behaviour for part 2 if you use them in your \\texttt{range()} statement.  \\begin{multicols}{5}\\begin{itemize}")
+                    qf.write(" \\textbf{Question 72:}\\\\\n Mark all numbers which could be used in the \\texttt{range()} statement in the function \\texttt{g} and give the correct behaviour.  \\begin{multicols}{5}\\begin{itemize}")
                     answers = [ (0, " 16"),
                             (0, " 308"),
                             (1, " 700"),
