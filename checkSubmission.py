@@ -74,17 +74,61 @@ def checkSubmission(f):
     v = [-4., 3., 9., 7. ]
     sol1 =[ 1.61904762, -0.42857143, -1.23809524,  1.38095238]
 
-    try:
-        sol =  pm.s(A,v)
-        if len(sol) != len(v):
-            return "Incorrect dimensions in return value from s()."
-        for i in range(len(sol)):
-            if abs( (sol[i]-sol1[i]) / sol1[i])>1e-5:
-                return "Function s() does not seem to solve a linear system of equations correctly."
-    except:
-        return "Something went wrong when executing the function s() to solve a linear system of equations."
+    sol =  pm.s(A,v)
+    if len(sol) != len(v):
+        return "Incorrect dimensions in return value from s()."
+    for i in range(len(sol)):
+        if abs( (sol[i]-sol1[i]) / sol1[i])>1e-5:
+            return "Function s() does not seem to solve a linear system of equations correctly."
     
     
+    ############
+    ############  Test for lst()
+    ############
+    def ft(x):
+        return [1.,x]
+
+    x = [0.,1.,2.,3.]
+    y = [1.,2.,3.,4.]
+    sol1 = [1.,1.]
+
+    sol =  pm.lst(x,y,ft)
+    M = len(ft(x[0]))
+    if len(sol) != M:
+        return "Incorrect dimensions in return value from lst()."
+    for i in range(len(sol)):
+        if abs( (sol[i]-sol1[i]) / sol1[i])>1e-5:
+            return "Function sf) does not seem to solve a linear system of equations correctly."
+    
+
+    x = [1980 , 1981 , 1982 , 1983 , 1984 , 1985 , 1986 , 1987 , 1988 , 1989 , 1990 , 1991 , 1992 , 1993 , 1994 , 1995 , 1996 , 1997 , 1998 , 1999 , 2000 , 2001 , 2002 , 2003 , 2004 , 2005 , 2006 , 2007 , 2008 , 2009 , 2010 , 2011 , 2012 , 2013 , 2014]
+    y = [ 0.135, 0.317, -0.002, 0.331, -0.045, -0.033, 0.120, 0.252, 0.375, 0.245, 0.492, 0.397, 0.093, 0.175, 0.343, 0.592, 0.227, 0.518, 0.835, 0.561, 0.484, 0.681, 0.778, 0.770, 0.674, 0.882, 0.810, 0.909, 0.695, 0.731, 0.901, 0.695, 0.751, 0.791, 0.762]
+   
+    sol1 = [-48.69734,0.024631]
+
+    sol =  pm.lst(x,y,ft)
+    M = len(ft(x[0]))
+    if len(sol) != M:
+        return "Incorrect dimensions in return value from lst()."
+    for i in range(len(sol)):
+        if abs( (sol[i]-sol1[i]) / sol1[i])>1e-4:
+            return "Function lst() does not seem to o the fit correctly."
+    
+
+    def ft(x):
+        return [1.,x, x*x]
+    
+    sol1 = [-1015.407,0.992819,-0.000242410]
+
+    sol =  pm.lst(x,y,ft)
+    M = len(ft(x[0]))
+    if len(sol) != M:
+        return "Incorrect dimensions in return value from lst()."
+    for i in range(len(sol)):
+        if abs( (sol[i]-sol1[i]) / sol1[i])>1e-4:
+            return "Function lst() does not seem to o the fit correctly."
+    
+
 
 
     
