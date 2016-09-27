@@ -46,10 +46,20 @@ with open('PSCB57H3-2016-F.csv', 'r') as csvfile:
                 writer.writerow([sid, 99])
                 continue
             errors = 0
+            errorsquest = 0
             for i in range(74):
-                if answ[11+4*i]!=quest[7+i]:
+                if i<69:
+                    quickfix = 1
+                else:
+                    quickfix = 0
+                #if sid == "1000351371":
+                #    print(i+1,"q",quest[7+i+quickfix],"a",answ[11+4*i],"e")
+                if answ[11+4*i]!=quest[7+i+quickfix]:
                     errors += 1
-            print(sid,"Errors:", errors)
-            writer.writerow([sid, errors])
+                    if i>70:
+                        errorsquest +=1
+            #print(sid,"Errors:", errors, "\t\t", errorsquest+min(1,errors-errorsquest))
+            print(sid,"Errors:",  errorsquest+min(1,errors-errorsquest))
+            writer.writerow([sid, errorsquest+min(1,errors-errorsquest)])
 
 
