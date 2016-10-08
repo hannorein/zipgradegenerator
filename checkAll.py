@@ -15,19 +15,22 @@ def getStudentData(sid):
     
 with open('checked.csv', 'w') as csvfile:
     writer = csv.writer(csvfile, delimiter=',', quotechar='"')
+    emails=""
     for f in glob.glob("uploads/*.py"):
         sid = f.split("/")[1].split("_")[0]
         ret = checkSubmission(f)
+        data = getStudentData(sid)
         if ret is None:
             ok = "1"
             ret = "All ok"
+            emails += data[11]+", "
         else:
             ok = "0"
 
-        data = getStudentData(sid)
         row = [sid,ok,ret,data[1],data[11],f]
         print(", ".join(row))
         writer.writerow(row)
+    print("\nAll Correct:\n"+emails[:-2])
 
 print("\nNo submission from:\n")
 

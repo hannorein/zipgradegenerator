@@ -34,7 +34,10 @@ def checkSubmission(f):
         sf = cf.read()
     if "input" in sf:
         return "Input statement used. Do not use the input statement for this assignment."
-    pm = __import__(splitext(basename(f))[0])
+    try:
+        pm = __import__(splitext(basename(f))[0])
+    except:
+        return "Error while importing student file."
     if "s" not in dir(pm):
         return "Function s(A,v) not defined."
     if "lsf" not in dir(pm):
@@ -93,14 +96,17 @@ def checkSubmission(f):
     x = [0.,1.,2.,3.]
     y = [1.,2.,3.,4.]
     sol1 = [1.,1.]
-
-    sol =  pm.lsf(x,y,ft)
-    M = len(ft(x[0]))
-    if len(sol) != M:
-        return "Incorrect dimensions in return value from lsf()."
-    for i in range(len(sol)):
-        if abs( (sol[i]-sol1[i]) / sol1[i])>1e-5:
-            return "Function sf) does not seem to solve a linear system of equations correctly."
+    
+    try:
+        sol =  pm.lsf(x,y,ft)
+        M = len(ft(x[0]))
+        if len(sol) != M:
+            return "Incorrect dimensions in return value from lsf()."
+        for i in range(len(sol)):
+            if abs( (sol[i]-sol1[i]) / sol1[i])>1e-5:
+                return "Function sf) does not seem to solve a linear system of equations correctly."
+    except:
+        return "Error in lsf()."
     
 
     x = [1980 , 1981 , 1982 , 1983 , 1984 , 1985 , 1986 , 1987 , 1988 , 1989 , 1990 , 1991 , 1992 , 1993 , 1994 , 1995 , 1996 , 1997 , 1998 , 1999 , 2000 , 2001 , 2002 , 2003 , 2004 , 2005 , 2006 , 2007 , 2008 , 2009 , 2010 , 2011 , 2012 , 2013 , 2014]
