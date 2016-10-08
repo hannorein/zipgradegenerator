@@ -6,6 +6,7 @@ from os.path import basename, splitext
 import signal
 import inspect
 import math
+sys.path.insert(0, "./uploads")
 from multiprocessing import Process,Manager
 
 correct_output = """"""
@@ -25,85 +26,111 @@ def checkSubmission(f):
         sf = cf.readlines()
     if len(sf)>70:
         return "Too many lines of code (max: 70)."
+    for l in sf:
+        if "import" in l:
+            if l.strip() != "from numpy.linalg import solve":
+                return "You may only use the following import statement: from numpy.linalg import solve"
     with open(f, 'r') as cf:
         sf = cf.read()
-    if "import" in sf:
-        return "Import statement used"
     if "input" in sf:
         return "Input statement used. Do not use the input statement for this assignment."
     pm = __import__(splitext(basename(f))[0])
-    if "f" not in dir(pm):
-        return "Function f not defined."
-    if "g" not in dir(pm):
-        return "Function g not defined."
+    if "s" not in dir(pm):
+        return "Function s(A,v) not defined."
+    if "lsf" not in dir(pm):
+        if "lst" not in dir(pm):
+            return "Function lsf(x,y,t) not defined."
+        pm.lsf = pm.lst
 
 
     ############
-    ############  Test for f(x)
+    ############  Test for s()
     ############
-    flines,flinesn = inspect.getsourcelines(pm.f)
-    allowedchars = ["d","e","f"," ","(","x",")",":","\n","r","t","u","n","\t","1","-","+","/"]
-    for l in flines:
-        for c in l:
-            if c not in allowedchars:
-                return "Character not allowed: '"+c+"'."
-    
-    corf = [[1e-16, 0.], [ 2.5e-16,1.],[1e-13,0.9988901220865705],[1.12e-16,2.],[-1e15,1.],[1e-15,1.1111111111111112]]
-    for a,b in corf:
-        try:
-            if pm.f(a)!=b:
-                return "Incorrect return value for f(%.16e)."%a
-        except:
-            return "Incorrect return value for f(%.16e)."%a
-    
-    ############
-    ############  Test for g(x)
-    ############
-    glines,glinesn = inspect.getsourcelines(pm.g)
-    ffor = 0
-    for l in glines:
-        if "for" in l:
-            ffor = 1
-    if ffor==0:
-        return "Function g contains no for loop."
+    A = [[2.,  1.,  4.,  1.],
+         [3.,  4., -1., -1.],
+         [1., -4.,  1.,  5.],
+         [2., -2.,  1.,  3.]]
 
+    v = [-4., 3., 9., 7. ]
+    sol1 = [ 2., -1., -2.,  1.]
 
-    corg = [[1e-300, float("inf")], [0.,0.],[0,0],[-1e-15,float("-inf")],[1e300,float("inf")]]
-    for a,b in corg:
-        try:
-            if pm.g(a)!=b:
-                return "Incorrect return value for g(%.16e)."%a
-        except:
-            return "Incorrect return value for g(%.16e)."%a
-            pass
-
-    
-    for a in [0,1,1000000,2000,-234234,10000002030403827287872]:
-        try:
-            if math.isinf(pm.g(a)):
-                return "Incorrect return value for g(%d)."%a
-        except OverflowError:
-            pass
-        except:
-            return "Incorrect return value for g(%d)."%a
-            pass
-    
-    ############
-    ############  Test for fibd(x)
-    ############
-    corfibd = [[1,0.], [10,1.421085471520200372e-14],[20,4.547473508864641190e-12]]
-    for a,b in corfibd:
-        try:
-            if math.fabs(pm.fibd(a)-b)>max(1e-10,1e-10*b):
-                return "Incorrect return value for fibd(%d)."%a
-        except:
-            return "Incorrect return value for fibd(%d)."%a
-            pass
     try:
-        if math.fabs(pm.fibd(90))<1000:
-            return "Incorrect return value for fibd(%d)."%90
+        sol =  pm.s(A,v)
+        if len(sol) != len(v):
+            return "Incorrect dimensions in return value from s()."
+        for i in range(len(sol)):
+            if abs( (sol[i]-sol1[i]) / sol1[i])>1e-8:
+                return "Function s() does not seem to solve a linear system of equations correctly."
     except:
-        return "Incorrect return value for fibd(%d)."%90
+        return "Something went wrong when executing the function s() to solve a linear system of equations."
+    
+    
+    ############
+    ############  Test for s()
+    ############
+    A = [[0.,  1.,  4.,  1.],
+         [3.,  4., -1., -1.],
+         [1., -4.,  1.,  5.],
+         [2., -2.,  1.,  3.]]
+
+    v = [-4., 3., 9., 7. ]
+    sol1 =[ 1.61904762, -0.42857143, -1.23809524,  1.38095238]
+
+    sol =  pm.s(A,v)
+    if len(sol) != len(v):
+        return "Incorrect dimensions in return value from s()."
+    for i in range(len(sol)):
+        if abs( (sol[i]-sol1[i]) / sol1[i])>1e-5:
+            return "Function s() does not seem to solve a linear system of equations correctly."
+    
+    
+    ############
+    ############  Test for lsf()
+    ############
+    def ft(x):
+        return [1.,x]
+
+    x = [0.,1.,2.,3.]
+    y = [1.,2.,3.,4.]
+    sol1 = [1.,1.]
+
+    sol =  pm.lsf(x,y,ft)
+    M = len(ft(x[0]))
+    if len(sol) != M:
+        return "Incorrect dimensions in return value from lsf()."
+    for i in range(len(sol)):
+        if abs( (sol[i]-sol1[i]) / sol1[i])>1e-5:
+            return "Function sf) does not seem to solve a linear system of equations correctly."
+    
+
+    x = [1980 , 1981 , 1982 , 1983 , 1984 , 1985 , 1986 , 1987 , 1988 , 1989 , 1990 , 1991 , 1992 , 1993 , 1994 , 1995 , 1996 , 1997 , 1998 , 1999 , 2000 , 2001 , 2002 , 2003 , 2004 , 2005 , 2006 , 2007 , 2008 , 2009 , 2010 , 2011 , 2012 , 2013 , 2014]
+    y = [ 0.135, 0.317, -0.002, 0.331, -0.045, -0.033, 0.120, 0.252, 0.375, 0.245, 0.492, 0.397, 0.093, 0.175, 0.343, 0.592, 0.227, 0.518, 0.835, 0.561, 0.484, 0.681, 0.778, 0.770, 0.674, 0.882, 0.810, 0.909, 0.695, 0.731, 0.901, 0.695, 0.751, 0.791, 0.762]
+   
+    sol1 = [-48.69734,0.024631]
+
+    sol =  pm.lsf(x,y,ft)
+    M = len(ft(x[0]))
+    if len(sol) != M:
+        return "Incorrect dimensions in return value from lsf()."
+    for i in range(len(sol)):
+        if abs( (sol[i]-sol1[i]) / sol1[i])>1e-4:
+            return "Function lsf() does not seem to o the fit correctly."
+    
+
+    def ft(x):
+        return [1.,x, x*x]
+    
+    sol1 = [-1015.407,0.992819,-0.000242410]
+
+    sol =  pm.lsf(x,y,ft)
+    M = len(ft(x[0]))
+    if len(sol) != M:
+        return "Incorrect dimensions in return value from lsf()."
+    for i in range(len(sol)):
+        if abs( (sol[i]-sol1[i]) / sol1[i])>1e-4:
+            return "Function lsf() does not seem to o the fit correctly."
+    
+
 
 
     
