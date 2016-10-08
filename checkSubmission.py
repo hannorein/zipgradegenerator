@@ -129,7 +129,6 @@ def checkSubmission(f):
     for i in range(len(sol)):
         if abs( (sol[i]-sol1[i]) / sol1[i])>1e-4:
             return "Function lsf() does not seem to o the fit correctly."
-    
 
 
 

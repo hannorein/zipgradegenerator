@@ -29,7 +29,11 @@ with open('PSCB57H3-2016-F.csv', 'r') as csvfile:
                         quest = row2
                         found =1
             if found==0:
-                print("Quiz questions not found")
+                print(sid, "Quiz questions not found")
+            if found==1 and quest[1]=="0":
+                print(sid, "Assignment not correct")
+                writer.writerow([sid, 99])
+                continue
             found = 0
             with open('quizDatafull.csv', 'r') as csvfile3:
                 reader2 = csv.reader(csvfile3, delimiter=',', quotechar='"')
@@ -37,21 +41,27 @@ with open('PSCB57H3-2016-F.csv', 'r') as csvfile:
                     if row2[5]==sid:
                         answ = row2
                         found =1
-            if found==1:
-                errors = 0
-                for i in range(49):
-                    ticked = 0
-                    if answ[11+4*i]=="A":
-                        ticked = 1
-                    if ticked!=int(quest[8+i]):
-                        errors += 1
-                if answ[11+4*50]!="C":
-                    errors += 1
-                if answ[11+4*51]!="C":
-                    errors += 1
-                writer.writerow([sid, errors])
-            else:
-                # Quiz not found
+            if found==0:
+                print(sid, "Quiz answers not found")
                 writer.writerow([sid, 99])
+                continue
+            errors = 0
+            errorsquest = 0
+            for i in range(74):
+                if i==68 or i == 69:
+                    continue
+                if i<69:
+                    quickfix = 1
+                else:
+                    quickfix = 0
+                #if sid == "1000186924":
+                #    print(i+1,"q",quest[7+i+quickfix],"a",answ[11+4*i],"e")
+                if answ[11+4*i]!=quest[7+i+quickfix]:
+                    errors += 1
+                    if i>70:
+                        errorsquest +=1
+            #print(sid,"Errors:", errors, "\t\t", errorsquest+min(1,errors-errorsquest))
+            print(sid,"Errors:", errorsquest,  errorsquest+min(1,errors-errorsquest))
+            writer.writerow([sid, errorsquest+min(1,errors-errorsquest)])
 
 
